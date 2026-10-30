@@ -19,5 +19,7 @@ jobs:
         run: npm test
       - name: TypeScript validation
         run: npm run typecheck
+      - name: Verify production build (demo data only)
+        run: npm run build
       - name: Check for obvious secrets
         run: python3 scripts/scan-secrets.py
