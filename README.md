@@ -8,6 +8,8 @@
 
 **Liens utiles :** [Portfolio en ligne](https://moussatoure-actor.web.app/) · [Tests du code public](https://github.com/carlxwj/moussa-toure-portfolio-code/actions/workflows/checks.yml)
 
+**Dossier technique approfondi (32 pages) :** [Lire l'étude de cas complète — conception, problèmes résolus, architecture et tests (PDF)](docs/ETUDE_DE_CAS_TECHNIQUE_MOUSSA_TOURE.pdf)
+
 > Le portfolio en ligne utilise des contenus réels distincts des données de démonstration de ce dépôt public. Les médias, le CV et les données de production ne sont pas inclus dans ce code source.
 
 ## Présentation
