@@ -75,7 +75,7 @@ python3 scripts/scan-secrets.py
 - La copie de production nettoyée avait précédemment passé 84 tests unitaires ; **ce chiffre ne s'applique pas à ce dépôt public distinct**.
 - Les tests qui nécessitaient des photos, un CV ou des crédits réels ont été retirés de cette édition. La suite restante comprend **38 tests réussis sur 38** lors du contrôle du 30/10/2026, et se lance avec `npm test`.
 - Les tests locaux ne prouvent pas la sécurité de Firebase en production et ne remplacent pas une validation sur Windows/navigateur et avec plusieurs comptes.
-- `npm run build` / `npm run typecheck` sont à vérifier après installation des dépendances ; la publication GitHub n'est pas un déploiement.
+- `npm run typecheck` et `npm run build` sont exécutés automatiquement par GitHub Actions sur la version publique de démonstration, après `npm ci`. Le build Vite et le pré-rendu des données fictives sont ainsi contrôlés ; cela ne valide pas les services Firebase, Cloudinary ou Cloudflare de production, ni un déploiement.
 
 ## Sécurité et confidentialité
 
