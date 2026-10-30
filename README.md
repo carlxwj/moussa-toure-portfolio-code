@@ -2,6 +2,8 @@
 
 **Public source-code edition · React 19 · TypeScript · Vite · Firebase Auth / Firestore · Cloudinary / Cloudflare (optional)**
 
+[![Source checks](https://github.com/carlxwj/moussa-toure-portfolio-code/actions/workflows/checks.yml/badge.svg)](https://github.com/carlxwj/moussa-toure-portfolio-code/actions/workflows/checks.yml)
+
 > **English:** A responsive bilingual actor portfolio and customizable CMS. This repository is a **sanitized code-only showcase**, not a copy of the production site or its database. Original photos, PDF CV, real testimonials, media manifests, live contact details and personal project records are **not included**.
 
 **Liens utiles :** [Portfolio en ligne](https://moussatoure-actor.web.app/) · [Tests du code public](https://github.com/carlxwj/moussa-toure-portfolio-code/actions/workflows/checks.yml)
