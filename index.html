@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101010" />
+  <title>Moussa Toure — Actor | Theatre & Film</title>
+  <meta name="description" content="Explore the acting portfolio of Moussa Toure: theatre performances, screen work, photography and showreel." />
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content="Moussa Toure — Actor" />
+  <meta property="og:description" content="Theatre. Film. Television. Explore Moussa Toure's performances and portfolio." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <!-- Production social profiles removed from the public code sample. -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <!-- First-paint overlay: conceals the static SEO fallback until React has mounted. -->
+  <style>
+    html { background: #101010; }
+    #boot-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 13px;
+      background: #101010;
+      color: #efeee9;
+      text-align: center;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+    #boot-screen .boot-name {
+      font-size: clamp(22px, 5.2vw, 42px);
+      font-weight: 600;
+      letter-spacing: -0.065em;
+    }
+    #boot-screen .boot-description {
+      font-size: 10px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: #99968f;
+    }
+  </style>
+  <!-- With JavaScript disabled, the prerendered text remains accessible. -->
+  <noscript><style>#boot-screen { display: none !important; }</style></noscript>
+</head>
+<body>
+  <div id="boot-screen" role="status" aria-label="Loading Moussa Toure’s portfolio">
+    <span class="boot-name">MOUSSA TOURE</span>
+    <span class="boot-description">ACTOR · THEATRE &amp; FILM</span>
+  </div>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

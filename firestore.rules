@@ -1,0 +1,94 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function isAdmin() {return request.auth != null && request.auth.token.admin == true && request.auth.token.email_verified == true;}
+  function isPublished() {return resource.data.status == 'published';}
+  function validPublication() {return request.resource.data.status in ['draft', 'published', 'hidden'] && request.resource.data.order is number;}
+
+  match /actorProfile/{id} {
+   allow get: if id == 'main' || isAdmin();
+   allow list: if false;
+   allow create, update, delete: if isAdmin() && id == 'main';
+  }
+  match /siteSettings/{id} {
+   allow get: if id == 'main' || isAdmin();
+   allow list: if false;
+   allow create, update, delete: if isAdmin() && id == 'main';
+  }
+  match /{coll}/{itemId} {
+   allow read: if (coll in ['projects','experiences','shootings','gallery','stories','videos','testimonials','socialLinks','customSections','training']) && (isAdmin() || isPublished());
+   allow create, update: if (coll in ['projects','experiences','shootings','gallery','stories','videos','testimonials','socialLinks','customSections','training']) && isAdmin() && validPublication();
+   allow delete: if (coll in ['projects','experiences','shootings','gallery','stories','videos','testimonials','socialLinks','customSections','training']) && isAdmin();
+  }
+  // Optimized media on Spark. Only an administrator may upload, edit or delete.
+  // 600KB raw / 820KB encoded cap avoids the 1MiB Firestore document limit.
+  // Images are NOT hosted in Firebase Storage, and these limits are not an
+  // alternative to a true image CDN for high-traffic / full-resolution media.
+  match /mediaAssets/{mediaId} {
+   allow get: if isAdmin() || resource.data.status == 'published';
+   allow list: if false;
+   allow create, update: if isAdmin()
+    && request.resource.data.keys().hasOnly(['mime','base64','bytes','status'])
+    && request.resource.data.mime in ['image/webp','application/pdf']
+    && request.resource.data.base64 is string
+    && request.resource.data.base64.size() <= 820000
+    && request.resource.data.bytes is int
+    && request.resource.data.bytes > 0
+    && request.resource.data.bytes <= 600000
+    && request.resource.data.status == 'published';
+   allow delete: if isAdmin();
+  }
+  match /mediaIndex/{mediaId} {
+   // Metadata of Cloudinary assets is stored here; never store API credentials.
+   allow read, delete: if isAdmin();
+   allow create, update: if isAdmin()
+    && request.resource.data.keys().hasOnly(['id','name','mime','kind','bytes','status','createdAt','provider','cloudinaryPublicId','r2Key','url','width','height'])
+    && request.resource.data.name is string
+    && request.resource.data.name.size() <= 100
+    && request.resource.data.kind in ['image','pdf']
+    && request.resource.data.bytes is int
+    && request.resource.data.bytes > 0
+    && request.resource.data.status == 'published'
+    && (
+      // Keep old Firestore image/CV limits and validation unchanged.
+      (!request.resource.data.keys().hasAny(['provider'])
+       && request.resource.data.mime in ['image/webp','application/pdf']
+       && request.resource.data.bytes <= 600000)
+      ||
+      // Cloudinary URL metadata only; images at 25 MB, PDF CV at 10 MB.
+      (request.resource.data.provider == 'cloudinary'
+       && ((request.resource.data.kind == 'image'
+         && request.resource.data.mime in ['image/jpeg','image/png','image/webp','image/avif']
+         && request.resource.data.bytes <= 25000000)
+         || (request.resource.data.kind == 'pdf'
+         && request.resource.data.mime == 'application/pdf'
+         && request.resource.data.bytes <= 10000000
+         && request.resource.data.url is string
+         && request.resource.data.url.matches('https://res[.]cloudinary[.]com/[a-zA-Z0-9_-]+/image/upload/.*[.]pdf')))
+       && request.resource.data.url is string
+       && request.resource.data.url.matches('https://res[.]cloudinary[.]com/[a-zA-Z0-9_-]+/image/upload/.*')
+       && request.resource.data.cloudinaryPublicId is string
+       && request.resource.data.cloudinaryPublicId.matches('moussa_toure/portfolio/[a-f0-9]{32}')
+       && request.resource.data.width is number
+       && request.resource.data.height is number)
+      ||
+      // New Cloudflare R2 assets; only authenticated admins may write metadata.
+      // R2 stores the binary; only a validated URL and opaque key go to Firestore.
+      (request.resource.data.provider == 'r2'
+       && request.resource.data.r2Key is string
+       && request.resource.data.r2Key.matches('moussa_toure/portfolio/[a-f0-9]{32}[.](jpg|png|webp|avif|pdf)')
+       && request.resource.data.url is string
+       && request.resource.data.url.matches('https://moussa-toure-media-gateway[.]moussatour2007[.]workers[.]dev/r2/media/moussa_toure/portfolio/[a-f0-9]{32}[.](jpg|png|webp|avif|pdf)')
+       && ((request.resource.data.kind == 'image' && request.resource.data.mime in ['image/jpeg','image/png','image/webp','image/avif'])
+        || (request.resource.data.kind == 'pdf' && request.resource.data.mime == 'application/pdf'))
+       && request.resource.data.bytes <= 500000000
+       && request.resource.data.width is number
+       && request.resource.data.height is number)
+    );
+  }
+  match /contactMessages/{messageId} {
+   allow read,write: if false; // Legacy private messages are not used on Spark.
+  }
+  match /{document=**} {allow read,write: if false;}
+ }
+}

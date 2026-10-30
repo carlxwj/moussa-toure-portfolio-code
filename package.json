@@ -1,0 +1,46 @@
+{
+  "name": "moussa-toure-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit && vite build && node scripts/prerender.mjs",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --test tests/*.test.mjs",
+    "test:rules": "vitest run tests/firebase.rules.test.ts",
+    "seed:preview": "node scripts/seed-firestore.mjs",
+    "seo:export": "node scripts/export-seo.mjs",
+    "emulators": "firebase emulators:start --only auth,firestore",
+    "testimonials:preview": "node scripts/import-testimonials.mjs",
+    "photos:preview": "node scripts/add-photos-to-firestore.mjs",
+    "training:preview": "node scripts/add-training-to-firestore.mjs"
+  },
+  "dependencies": {
+    "firebase": "^11.10.0",
+    "gsap": "^3.13.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.21",
+    "firebase-admin": "^13.4.0",
+    "firebase-tools": "^14.8.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.0"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "1.14.6"
+  }
+}

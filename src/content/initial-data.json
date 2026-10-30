@@ -1,0 +1,139 @@
+{
+  "profile": {
+    "id": "main",
+    "name": "Moussa Toure",
+    "location": {
+      "en": "Location not included in public sample",
+      "fr": "Localisation absente de la démonstration"
+    },
+    "role": {
+      "en": "Actor",
+      "fr": "Comédien"
+    },
+    "shortBio": {
+      "en": "Public code demonstration; production content and media are not included.",
+      "fr": "Démonstration du code public ; contenus et médias de production non inclus."
+    },
+    "biography": {
+      "en": "This repository showcases the application architecture, CMS and interface. All personal media and original portfolio data are excluded.",
+      "fr": "Ce dépôt présente l’architecture, le CMS et l’interface. Les médias personnels et les données du portfolio original sont exclus."
+    },
+    "longBio": {
+      "en": "Example content only.",
+      "fr": "Contenu de démonstration uniquement."
+    },
+    "languages": {
+      "en": "Not provided",
+      "fr": "Non renseigné"
+    },
+    "skills": {
+      "en": "Sample content",
+      "fr": "Contenu fictif"
+    },
+    "heroImage": "",
+    "aboutImage": ""
+  },
+  "settings": {
+    "id": "main",
+    "defaultLanguage": "en",
+    "sections": {
+      "about": true,
+      "projects": true,
+      "gallery": false,
+      "videos": false,
+      "credits": true,
+      "beyond": true,
+      "testimonials": false,
+      "contact": false,
+      "stories": false,
+      "training": false,
+      "showreel": false
+    },
+    "seoDescription": {
+      "en": "Source-code-only showcase of a bilingual actor portfolio and CMS.",
+      "fr": "Présentation publique du code d’un portfolio bilingue et de son CMS."
+    },
+    "retentionDays": 90,
+    "sectionOrder": [
+      "about",
+      "showreel",
+      "projects",
+      "videos",
+      "gallery",
+      "training",
+      "credits",
+      "beyond",
+      "stories",
+      "testimonials",
+      "professional",
+      "contact"
+    ],
+    "cvUrl": "",
+    "copy": {},
+    "formspreeFormId": "",
+    "contactKinds": [
+      "Casting",
+      "Film / television",
+      "Theatre",
+      "Commercial",
+      "Photography",
+      "Collaboration",
+      "Other"
+    ],
+    "experiencesInitialized": true
+  },
+  "projects": [
+    {
+      "id": "sample-project",
+      "slug": "sample-project",
+      "status": "published",
+      "order": 1,
+      "title": {
+        "en": "DEMO PROJECT — NOT A REAL CREDIT",
+        "fr": "PROJET DÉMO — PAS UN VRAI CRÉDIT"
+      },
+      "category": "film",
+      "role": {
+        "en": "Example role",
+        "fr": "Rôle fictif"
+      },
+      "year": "2026",
+      "description": {
+        "en": "Illustrative placeholder for the public code edition. Not a real production.",
+        "fr": "Exemple purement illustratif de la version publique du code. Aucune production réelle."
+      },
+      "image": "",
+      "gallery": []
+    }
+  ],
+  "gallery": [],
+  "videos": [],
+  "testimonials": [],
+  "socialLinks": [],
+  "stories": [],
+  "customSections": [],
+  "experiences": [
+    {
+      "id": "sample-experience",
+      "status": "published",
+      "order": 1,
+      "title": {
+        "en": "DEMO EXPERIENCE",
+        "fr": "EXPÉRIENCE DÉMO"
+      },
+      "role": {
+        "en": "Example only",
+        "fr": "Exemple uniquement"
+      },
+      "category": "film",
+      "year": "2026",
+      "projectId": "sample-project",
+      "image": "",
+      "gallery": [],
+      "description": {
+        "en": "Not a real credit",
+        "fr": "Pas un véritable crédit"
+      }
+    }
+  ]
+}

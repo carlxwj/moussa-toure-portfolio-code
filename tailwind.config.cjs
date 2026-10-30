@@ -1,0 +1,1 @@
+module.exports={content:['./index.html','./src/**/*.{ts,tsx}'],theme:{extend:{colors:{ink:'#101010',cream:'#efeee9'},fontFamily:{editorial:['Helvetica Neue','Helvetica','Arial','sans-serif']}}},plugins:[]};

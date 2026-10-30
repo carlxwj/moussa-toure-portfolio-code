@@ -1,0 +1,15 @@
+name = "example-portfolio-media-gateway"
+main = "index.js"
+compatibility_date = "2026-10-01"
+
+[vars]
+FIREBASE_PROJECT_ID = "your-firebase-project-id"
+ALLOWED_ORIGINS = "https://your-project.web.app,https://your-project.firebaseapp.com,http://localhost:5173"
+# Put CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
+# into Worker secrets, NOT in this file. See CONFIGURER_CLOUDINARY.md.
+
+# IMPORTANT: create this R2 bucket before deploying this Worker.
+# Cloudinary routes stay operational; R2 is opt-in via VITE_R2_ENABLED.
+[[r2_buckets]]
+binding = "R2_MEDIA"
+bucket_name = "example-portfolio-media"

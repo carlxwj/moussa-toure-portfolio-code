@@ -1,0 +1,52 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createHash,generateKeyPairSync,sign} from 'node:crypto';
+import worker from '../cloudinary-worker/index.js';
+const base=new URL('../',import.meta.url);
+const read=(name)=>readFileSync(new URL(name,base),'utf8');
+const env={ALLOWED_ORIGINS:'https://moussatoure-actor.web.app,http://localhost:5173',FIREBASE_PROJECT_ID:'moussatoure-actor',CLOUDINARY_CLOUD_NAME:'test-cloud',CLOUDINARY_API_KEY:'public-key',CLOUDINARY_API_SECRET:'private-test-secret'};
+const origin='https://moussatoure-actor.web.app';
+const {privateKey,publicKey}=generateKeyPairSync('rsa',{modulusLength:2048});
+const jwk={...publicKey.export({format:'jwk'}),kid:'test-kid',alg:'RS256',use:'sig'};
+const b64=o=>Buffer.from(JSON.stringify(o)).toString('base64url');
+function token(claims={}){const now=Math.floor(Date.now()/1000);const head=b64({alg:'RS256',kid:'test-kid'});const body=b64({iss:'https://securetoken.google.com/moussatoure-actor',aud:'moussatoure-actor',sub:'user123',exp:now+3600,iat:now,auth_time:now-200,email_verified:true,admin:true,...claims});return `${head}.${body}.${sign('RSA-SHA256',Buffer.from(`${head}.${body}`),privateKey).toString('base64url')}`}
+const call=(path,id)=>worker.fetch(new Request(`https://worker.example${path}`,{method:'POST',headers:{Origin:origin,Authorization:`Bearer ${id}`,'Content-Type':'application/json'},body:'{}'}),env);
+const oldFetch=globalThis.fetch;
+test.after(()=>{globalThis.fetch=oldFetch});
+test('Only verified Firebase admin can sign uploads',async()=>{
+ globalThis.fetch=async url=>{if(String(url).includes('googleapis.com'))return new Response(JSON.stringify({keys:[jwk]}),{status:200});throw new Error('Unexpected request: '+url)};
+ const good=await call('/sign',token());assert.equal(good.status,200);
+ const p=await good.json();assert.match(p.public_id,/^moussa_toure\/portfolio\/[a-f0-9]{32}$/);
+ assert.equal(p.cloud_name,env.CLOUDINARY_CLOUD_NAME);
+ assert.equal(p.signature,createHash('sha1').update(`public_id=${p.public_id}&timestamp=${p.timestamp}${env.CLOUDINARY_API_SECRET}`).digest('hex'));
+ assert.ok(!JSON.stringify(p).includes(env.CLOUDINARY_API_SECRET));
+ assert.equal((await call('/sign',token({admin:false}))).status,403);
+ assert.equal((await call('/sign',token({email_verified:false}))).status,403);
+ assert.equal((await call('/sign',token({aud:'different-project'}))).status,403);
+ assert.equal((await call('/sign',token({exp:Math.floor(Date.now()/1000)-5}))).status,403);
+ const wrong=new Request('https://worker.example/sign',{method:'POST',headers:{Origin:'https://attack.example',Authorization:`Bearer ${token()}`},body:'{}'});
+ assert.equal((await worker.fetch(wrong,env)).status,403);
+ });
+test('Photo editors support covers, galleries and new independent shootings without rewriting existing media',()=>{
+ const editor=read('src/pages/Admin.tsx');const media=read('src/lib/media.tsx');const rules=read('firestore.rules');const models=read('src/types/models.ts');
+ assert.match(editor,/function CoverGalleryEditor/);
+ assert.match(editor,/Définir comme couverture/);
+ assert.match(editor,/['"]shootings['"]/);
+ assert.match(editor,/uploadCloudImage\(f\)/);
+ assert.match(editor,/function assetSource/);
+ assert.match(editor,/MEDIA_PREFIX\+asset.id/);
+ assert.match(media,/MEDIA_FILE_LIMIT=600_000/);
+ assert.match(rules,/mediaAssets/);
+ assert.match(rules,/cloudinaryPublicId/);
+ assert.match(rules,/moussa_toure\/portfolio/);
+ assert.match(models,/interface Shooting/);
+});
+test('Cloudinary Worker has no unsigned public upload path or secrets in client',()=>{
+ const workerSource=read('cloudinary-worker/index.js');const client=read('src/lib/cloudinary.ts');
+ assert.doesNotMatch(client,/CLOUDINARY_API_SECRET/);
+ assert.match(workerSource,/payload.admin!==true/);
+ assert.match(workerSource,/crypto.subtle.verify/);
+ assert.match(workerSource,/\/delete/);
+ assert.match(workerSource,/CLOUDINARY_API_SECRET/);
+});
