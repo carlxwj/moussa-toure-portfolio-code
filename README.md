@@ -4,6 +4,10 @@
 
 > **English:** A responsive bilingual actor portfolio and customizable CMS. This repository is a **sanitized code-only showcase**, not a copy of the production site or its database. Original photos, PDF CV, real testimonials, media manifests, live contact details and personal project records are **not included**.
 
+**Liens utiles :** [Portfolio en ligne](https://moussatoure-actor.web.app/) · [Tests du code public](https://github.com/carlxwj/moussa-toure-portfolio-code/actions/workflows/checks.yml)
+
+> Le portfolio en ligne utilise des contenus réels distincts des données de démonstration de ce dépôt public. Les médias, le CV et les données de production ne sont pas inclus dans ce code source.
+
 ## Présentation
 
 Portfolio professionnel bilingue (français / anglais) réalisé pour un comédien, accompagné d'un système d'administration permettant de publier, modifier, masquer et réorganiser des contenus sans intervenir dans le code. L'objectif de ce dépôt est de **présenter le travail de développement** : architecture React, formulaires, règles d'accès, intégration Firebase et gestion des médias.
