@@ -1,11 +1,12 @@
-import admin from 'firebase-admin';
+import { applicationDefault, initializeApp } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
 import {readFileSync} from 'node:fs';
 const project=process.env.FIREBASE_PROJECT_ID;
 const confirmed=process.argv.includes('--write');
 if(project!=='moussatoure-actor')throw new Error('FIREBASE_PROJECT_ID must equal moussatoure-actor');
 if(confirmed&&process.env.CONFIRM_TRAINING_PROJECT!=='moussatoure-actor')throw new Error('Set CONFIRM_TRAINING_PROJECT=moussatoure-actor to write');
-admin.initializeApp({credential:admin.credential.applicationDefault(),projectId:project});
-const db=admin.firestore();
+initializeApp({credential:applicationDefault(),projectId:project});
+const db=getFirestore();
 const training=JSON.parse(readFileSync(new URL('../src/content/training-data.json',import.meta.url),'utf8'));
 const buttonPhotos=['/media/training/button-scene.webp','/media/training/button-glasses.webp'];
 const projectRef=db.collection('projects').doc('first-camera-role');
