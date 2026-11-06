@@ -18,7 +18,7 @@
     "training:preview": "node scripts/add-training-to-firestore.mjs"
   },
   "dependencies": {
-    "firebase": "^11.10.0",
+    "firebase": "^13.2.0",
     "gsap": "^3.13.0",
     "lucide-react": "^0.468.0",
     "react": "^19.1.0",
